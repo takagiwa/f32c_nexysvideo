@@ -37,9 +37,6 @@ end glue;
 
 architecture Behavioral of glue is
 
-    signal clk_in: std_logic;
-    signal clk_fb: std_logic;
-    signal clk_out: std_logic;
     signal clk: std_logic;
 
     signal rs232_break: std_logic;
@@ -50,30 +47,7 @@ begin
     clkin: ibufg
     port map (
        i => clk_100m,
-       o => clk_in
-    );
-
-    clkgen: plle2_base
-    generic map (
-        clkfbout_mult => 9,
-        clkin1_period => 10.0,
-        divclk_divide => 1,
-        clkout0_divide => 9
-    )
-    port map (
-        clkin1 => clk_in,
-        clkfbin => clk_fb,
-        rst => rs232_break,
-        clkout0 => clk_out,
-        clkfbout => clk_fb,
-        locked => open,
-        pwrdwn => '0'
-    );
-
-    clkbuf: bufg
-    port map (
-        i => clk_out,
-        o => clk
+       o => clk
     );
 
     -- reset hard-block
