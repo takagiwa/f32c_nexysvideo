@@ -31,7 +31,9 @@ entity glue is
         rs232_dce_rxd: in std_logic;  -- V18
         btnl, btnr, btnu, btnd, btnc: in std_logic;
         sw: in std_logic_vector(7 downto 0);
-        ld: out std_logic_vector(7 downto 0)
+        ld: out std_logic_vector(7 downto 0);
+        ja, jb, jc: inout std_logic_vector(7 downto 0); -- pmod
+        oled_dc, oled_res, oled_sclk, oled_sdin, oled_vbat, oled_vdd: inout std_logic
     );
 end glue;
 
@@ -81,17 +83,31 @@ begin
         sio_rxd(0) => rs232_dce_rxd,
         sio_break(0) => rs232_break,
         spi_miso => (others => '0'),
-        gpio(127 downto 0) => open,
+
+        gpio(7 downto 0) => ja,
+        gpio(15 downto 8) => jb,
+        gpio(23 downto 16) => jc,
+        gpio(24) => oled_dc,
+        gpio(25) => oled_res,
+        gpio(26) => oled_sclk,
+        gpio(27) => oled_sdin,
+        gpio(28) => oled_vbat,
+        gpio(29) => oled_vdd,
+        gpio(31 downto 30) => open,
+        gpio(127 downto 32) => open,
+
         simple_out(7 downto 0) => ld,
         simple_out(31 downto 8) => open,
+
         simple_in(0) => btnr,
         simple_in(1) => btnl,
         simple_in(2) => btnd,
         simple_in(3) => btnu,
         simple_in(4) => btnc,
         simple_in(7 downto 5) => "000",
-        simple_in(15 downto 8) => sw,
-        simple_in(31 downto 16) => x"00"
+        simple_in(15 downto 8) => x"00",
+        simple_in(23 downto 16) => sw,
+        simple_in(31 downto 24) => x"00"
     );
 
 end Behavioral;
